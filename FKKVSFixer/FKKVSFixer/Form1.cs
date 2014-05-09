@@ -82,8 +82,14 @@ namespace FKKVSFixer
                 }
             }
             string output = "";
+            for (int i = 0; i < 17; i++)
+            {
+                output += fkkvsFile[0, i] + ",";
+            }
+            output += "\r\n";
             for (int i = 0; i < fkkvs.mapData.GetLength(0); i++)
             {
+                output += fkkvsFile[i+1, 0] + ",";
                 for (int j = 0; j < fkkvs.mapData.GetLength(1); j++)
                 {
                     output += fkkvs.mapData[i, j].ToString() + ",";
