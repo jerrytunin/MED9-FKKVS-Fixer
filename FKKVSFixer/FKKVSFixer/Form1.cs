@@ -84,7 +84,14 @@ namespace FKKVSFixer
             string output = "";
             for (int i = 0; i < 17; i++)
             {
-                output += fkkvsFile[0, i] + ",";
+                if (i >= 16)
+                {
+                    output += fkkvsFile[0, i];
+                }
+                else
+                {
+                    output += fkkvsFile[0, i] + ",";
+                }
             }
             output += "\r\n";
             for (int i = 0; i < fkkvs.mapData.GetLength(0); i++)
@@ -92,17 +99,30 @@ namespace FKKVSFixer
                 output += fkkvsFile[i+1, 0] + ",";
                 for (int j = 0; j < fkkvs.mapData.GetLength(1); j++)
                 {
-                    output += fkkvs.mapData[i, j].ToString() + ",";
+                    if (j >= 15)
+                    {
+                        output += fkkvs.mapData[i, j].ToString();
+                    }
+                    else
+                    {
+                        output += fkkvs.mapData[i, j].ToString() + ",";
+                    }
                 }
                 output += "\r\n";
             }
             File.WriteAllText(saveFile, output);
+            updateFKKVSView(output, fkkvs);
         }
 
         private string[,] processCSV(string fileName)
         {
             string lf = File.ReadAllText(fileName);
-            string[] rows = Regex.Split(lf, "\r\n|\r|\n");
+            return processCSVFromString(lf);
+        }
+
+        private string[,] processCSVFromString(string data)
+        {
+            string[] rows = Regex.Split(data, "\r\n|\r|\n");
             int numRows = rows.Length;
             int numCols = rows[0].Split(',').Length;
             string[,] log = new string[numRows, numCols];
@@ -127,6 +147,53 @@ namespace FKKVSFixer
             {
                 txtFKKVS.Text = ofd.FileName;
             }
+        }
+
+        private void updateFKKVSView(string dIn, FKKVSMap fkkvs)
+        {
+            string[,] data = processCSVFromString(dIn);
+            int[,] changeMask = new int[17, 17];
+            DataTable d = new DataTable();
+
+            for (int i = 0; i < 17; i++)
+            {
+                d.Columns.Add();
+            }
+
+            int rowCount = data.GetLength(0) - 1;
+            int rowLength = data.GetLength(1);
+
+            for (int i = 1; i < changeMask.GetLength(0); i++)
+            {
+                for (int j = 1; j < changeMask.GetLength(1); j++)
+                {
+                    if (fkkvs.origData[i - 1, j - 1] > fkkvs.mapData[i - 1, j - 1])
+                    {
+                        changeMask[i, j] = -1;
+                    }
+                    else if (fkkvs.origData[i - 1, j - 1] < fkkvs.mapData[i - 1, j - 1])
+                    {
+                        changeMask[i, j] = 1;
+                    }
+                }
+            }
+
+            for (int j = 0; j < rowCount; j++)
+            {
+                // create a DataRow using .NewRow()
+                DataRow row = d.NewRow();
+
+                // iterate over all columns to fill the row
+                for (int i = 0; i < rowLength; i++)
+                {
+                    row[i] = Double.Parse(data[j, i]).ToString("#.######");
+                }
+
+                // add the current row to the DataTable
+                d.Rows.Add(row);
+            }
+            DataViewForm f = new DataViewForm(d, changeMask);
+            f.ShowDialog();
         }
     }
 }

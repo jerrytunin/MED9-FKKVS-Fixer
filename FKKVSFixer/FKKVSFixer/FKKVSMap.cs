@@ -15,6 +15,7 @@ namespace FKKVSFixer
         public double[] upperPW { get; set; }
 
         public double[,] mapData { get; set; }
+        public double[,] origData { get; set; }
 
         public FKKVSMap(string[,] fullMapData)
         {
@@ -23,6 +24,7 @@ namespace FKKVSFixer
             lowerPW = new double[16];
             upperPW = new double[16];
             mapData = new double[16, 16];
+            origData = new double[16, 16];
             parseMapData(fullMapData);
         }
 
@@ -45,6 +47,7 @@ namespace FKKVSFixer
                 for (int j = 1; j < 17; j++)
                 {
                     mapData[i - 1, j - 1] = Double.Parse(fullMapData[i, j]);
+                    origData[i - 1, j - 1] = Double.Parse(fullMapData[i, j]);
                 }
             }
         }

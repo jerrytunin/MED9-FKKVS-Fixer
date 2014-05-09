@@ -85,7 +85,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(748, 469);
+            this.ClientSize = new System.Drawing.Size(748, 387);
             this.Controls.Add(this.cmdChooseFKKVS);
             this.Controls.Add(this.txtFKKVS);
             this.Controls.Add(this.cmdProcess);
