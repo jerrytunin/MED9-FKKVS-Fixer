@@ -9,6 +9,9 @@ using System.Windows.Forms;
 
 namespace FKKVSFixer
 {
+    /// <summary>
+    /// Form to display FKKVS with changed areas
+    /// </summary>
     public partial class DataViewForm : Form
     {
         DataTable fkkvs;
@@ -25,6 +28,7 @@ namespace FKKVSFixer
         private void DataViewForm_Load(object sender, EventArgs e)
         {
             fkkvsView.DataSource = fkkvs;
+            //Parse change mask to color cells and show increases/decreases
             for (int i = 0; i < changeMask.GetLength(0); i++)
             {
                 fkkvsView.Rows[i].HeaderCell.Value = pwAxis[i].ToString("#.##");

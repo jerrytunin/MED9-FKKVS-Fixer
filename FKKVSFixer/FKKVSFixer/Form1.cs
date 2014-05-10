@@ -11,6 +11,9 @@ using System.Windows.Forms;
 
 namespace FKKVSFixer
 {
+    /// <summary>
+    /// Form to accept CSV inputs of log file and FKKVS and apply corrections and output CSV and graphical representation.
+    /// </summary>
     public partial class Form1 : Form
     {
         public Form1()
@@ -27,7 +30,9 @@ namespace FKKVSFixer
                 txtLog.Text = ofd.FileName;
             }
         }
-
+        /// <summary>
+        /// Process the CSV file and generate output
+        /// </summary>
         private void cmdProcess_Click(object sender, EventArgs e)
         {
             if (txtLog.Text.Equals(""))
@@ -37,12 +42,12 @@ namespace FKKVSFixer
             if (sfd.ShowDialog() != System.Windows.Forms.DialogResult.OK)
                 return;
             string saveFile = sfd.FileName;
-            //RPM, PW, Correction
             string[,] logFile = processCSV(txtLog.Text);
             LogDataItem[] logData = new LogDataItem[logFile.GetLength(0) - 1];
             int rpmCol = -1;
             int pwCol = -1;
             int corCol = -1;
+            //Auto determine the location of RPM, PW, and corrections
             for (int i = 0; i < logFile.GetLength(1); i++)
             {
                 if (logFile[0, i].Contains("nmot"))
@@ -58,12 +63,14 @@ namespace FKKVSFixer
                     corCol = i;
                 }
             }
+            //Assign data to 2D array and parse to double
             for (int i = 0; i < logData.Length; i++)
 			{
                 logData[i] = new LogDataItem(Double.Parse(logFile[i + 1, rpmCol]), Double.Parse(logFile[i + 1, pwCol]), Double.Parse(logFile[i + 1, corCol]));
 			}
             string[,] fkkvsFile = processCSV(txtFKKVS.Text);
             FKKVSMap fkkvs = new FKKVSMap(fkkvsFile);
+            //Create axis holders for log data values to be deposited into
             List<LogDataItem>[] rpmVals = new List<LogDataItem>[16];
             List<LogDataItem>[] pwVals = new List<LogDataItem>[16];
             for (int i = 0; i < rpmVals.Length; i++)
@@ -71,7 +78,7 @@ namespace FKKVSFixer
                 rpmVals[i] = new List<LogDataItem>();
                 pwVals[i] = new List<LogDataItem>();
             }
-
+            //Determine which column and row the LogDataItem should be in
             for (int i = 0; i < logData.Length; i++)
             {
                 for (int j = 0; j < fkkvs.lowerRPM.Length; j++)
@@ -83,6 +90,7 @@ namespace FKKVSFixer
                         pwVals[j].Add(l);
                 }
             }
+            //Update the FKKVS mapData for the values at the specific RPM and PW values
             for (int i = 0; i < rpmVals.Length; i++)
             {
                 int x = i;
@@ -99,6 +107,7 @@ namespace FKKVSFixer
                     fkkvs.mapData[x, y] = (fkkvs.mapData[x, y] + l.correction) / 2;
                 }
             }
+            //Create CSV Output
             string output = "";
             for (int i = 0; i < 17; i++)
             {
@@ -129,15 +138,25 @@ namespace FKKVSFixer
                 output += "\r\n";
             }
             File.WriteAllText(saveFile, output);
+            //Display FKKVS Map
             updateFKKVSView(output, fkkvs);
         }
-
+        /// <summary>
+        /// Parse a CSV from a file
+        /// </summary>
+        /// <param name="fileName">The file to process</param>
+        /// <returns>A 2D array containing the parsed CSV</returns>
         private string[,] processCSV(string fileName)
         {
             string lf = File.ReadAllText(fileName);
             return processCSVFromString(lf);
         }
 
+        /// <summary>
+        /// Parse a CSV from a string
+        /// </summary>
+        /// <param name="data">The string containing the CSV data</param>
+        /// <returns>A 2D array containing the parsed CSV</returns>
         private string[,] processCSVFromString(string data)
         {
             data = data.TrimEnd('\r', '\n');
@@ -168,12 +187,17 @@ namespace FKKVSFixer
             }
         }
 
+        /// <summary>
+        /// Update the fkkvs view and display form
+        /// </summary>
+        /// <param name="dIn">The updated fkkvs data</param>
+        /// <param name="fkkvs">The FKKVS map</param>
         private void updateFKKVSView(string dIn, FKKVSMap fkkvs)
         {
             string[,] data = processCSVFromString(dIn);
             int[,] changeMask = new int[16, 16];
             DataTable d = new DataTable();
-
+            //Create and label columns with RPM values
             for (int i = 0; i < 16; i++)
             {
                 d.Columns.Add(fkkvs.rpmAxis[i].ToString());
@@ -181,7 +205,7 @@ namespace FKKVSFixer
 
             int rowCount = data.GetLength(0);
             int rowLength = data.GetLength(1);
-
+            //Calculate change mask for coloring of cells
             for (int i = 0; i < changeMask.GetLength(0); i++)
             {
                 for (int j = 0; j < changeMask.GetLength(1); j++)
@@ -197,19 +221,16 @@ namespace FKKVSFixer
                 }
             }
 
+            //Parse data from the updated map to doubles and assign to cells
             for (int i = 1; i < rowCount; i++)
             {
-                // create a DataRow using .NewRow()
                 DataRow row = d.NewRow();
                 
-
-                // iterate over all columns to fill the row
                 for (int j = 1; j < rowLength; j++)
                 {
                     row[j-1] = Double.Parse(data[i, j]).ToString("#.######");
                 }
 
-                // add the current row to the DataTable
                 d.Rows.Add(row);
             }
             DataViewForm f = new DataViewForm(d, changeMask, fkkvs.pwAxis);

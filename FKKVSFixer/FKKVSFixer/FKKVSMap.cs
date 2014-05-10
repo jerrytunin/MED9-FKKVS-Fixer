@@ -39,7 +39,7 @@ namespace FKKVSFixer
             {
                 throw new Exception();
             }
-
+            //Calculate lower and upper range for RPM and PW values
             for (int i = 0; i < 16;)
             {
                 lowerRPM[i] = (Double.Parse(fullMapData[0, i]) + Double.Parse(fullMapData[0, i + 1])) / 2;
@@ -47,6 +47,7 @@ namespace FKKVSFixer
                 upperRPM[i++] = i >= 16 ? (Double.Parse(fullMapData[0, i]) + MAXRPM) / 2 : (Double.Parse(fullMapData[0, i]) + Double.Parse(fullMapData[0, i + 1])) / 2;
                 upperPW[i - 1] = i >= 16 ? (Double.Parse(fullMapData[i, 0]) + MAXPW) / 2 : (Double.Parse(fullMapData[i, 0]) + Double.Parse(fullMapData[i + 1, 0])) / 2;
             }
+            //Set axes arrays and parse map data into 2D double arrays
             for (int i = 1; i < 17; i++)
             {
                 rpmAxis[i-1] = Double.Parse(fullMapData[0, i]);
