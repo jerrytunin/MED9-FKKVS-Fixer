@@ -17,6 +17,9 @@ namespace FKKVSFixer
         public double[,] mapData { get; set; }
         public double[,] origData { get; set; }
 
+        public double[] rpmAxis { get; set; }
+        public double[] pwAxis { get; set; }
+
         public FKKVSMap(string[,] fullMapData)
         {
             lowerRPM = new double[16];
@@ -25,6 +28,8 @@ namespace FKKVSFixer
             upperPW = new double[16];
             mapData = new double[16, 16];
             origData = new double[16, 16];
+            rpmAxis = new double[16];
+            pwAxis = new double[16];
             parseMapData(fullMapData);
         }
 
@@ -44,6 +49,8 @@ namespace FKKVSFixer
             }
             for (int i = 1; i < 17; i++)
             {
+                rpmAxis[i-1] = Double.Parse(fullMapData[0, i]);
+                pwAxis[i-1] = Double.Parse(fullMapData[i, 0]);
                 for (int j = 1; j < 17; j++)
                 {
                     mapData[i - 1, j - 1] = Double.Parse(fullMapData[i, j]);

@@ -40,9 +40,27 @@ namespace FKKVSFixer
             //RPM, PW, Correction
             string[,] logFile = processCSV(txtLog.Text);
             LogDataItem[] logData = new LogDataItem[logFile.GetLength(0) - 1];
+            int rpmCol = -1;
+            int pwCol = -1;
+            int corCol = -1;
+            for (int i = 0; i < logFile.GetLength(1); i++)
+            {
+                if (logFile[0, i].Contains("nmot"))
+                {
+                    rpmCol = i;
+                }
+                else if (logFile[0, i].Contains("ti"))
+                {
+                    pwCol = i;
+                }
+                else if (logFile[0, i].Contains("fr"))
+                {
+                    corCol = i;
+                }
+            }
             for (int i = 0; i < logData.Length; i++)
 			{
-                logData[i] = new LogDataItem(Double.Parse(logFile[i + 1, 0]), Double.Parse(logFile[i + 1, 1]), Double.Parse(logFile[i + 1, 2]));
+                logData[i] = new LogDataItem(Double.Parse(logFile[i + 1, rpmCol]), Double.Parse(logFile[i + 1, pwCol]), Double.Parse(logFile[i + 1, corCol]));
 			}
             string[,] fkkvsFile = processCSV(txtFKKVS.Text);
             FKKVSMap fkkvs = new FKKVSMap(fkkvsFile);
@@ -122,6 +140,7 @@ namespace FKKVSFixer
 
         private string[,] processCSVFromString(string data)
         {
+            data = data.TrimEnd('\r', '\n');
             string[] rows = Regex.Split(data, "\r\n|\r|\n");
             int numRows = rows.Length;
             int numCols = rows[0].Split(',').Length;
@@ -152,48 +171,50 @@ namespace FKKVSFixer
         private void updateFKKVSView(string dIn, FKKVSMap fkkvs)
         {
             string[,] data = processCSVFromString(dIn);
-            int[,] changeMask = new int[17, 17];
+            int[,] changeMask = new int[16, 16];
             DataTable d = new DataTable();
 
-            for (int i = 0; i < 17; i++)
+            for (int i = 0; i < 16; i++)
             {
-                d.Columns.Add();
+                d.Columns.Add(fkkvs.rpmAxis[i].ToString());
             }
 
-            int rowCount = data.GetLength(0) - 1;
+            int rowCount = data.GetLength(0);
             int rowLength = data.GetLength(1);
 
-            for (int i = 1; i < changeMask.GetLength(0); i++)
+            for (int i = 0; i < changeMask.GetLength(0); i++)
             {
-                for (int j = 1; j < changeMask.GetLength(1); j++)
+                for (int j = 0; j < changeMask.GetLength(1); j++)
                 {
-                    if (fkkvs.origData[i - 1, j - 1] > fkkvs.mapData[i - 1, j - 1])
+                    if (fkkvs.origData[i, j] > fkkvs.mapData[i, j])
                     {
                         changeMask[i, j] = -1;
                     }
-                    else if (fkkvs.origData[i - 1, j - 1] < fkkvs.mapData[i - 1, j - 1])
+                    else if (fkkvs.origData[i, j] < fkkvs.mapData[i, j])
                     {
                         changeMask[i, j] = 1;
                     }
                 }
             }
 
-            for (int j = 0; j < rowCount; j++)
+            for (int i = 1; i < rowCount; i++)
             {
                 // create a DataRow using .NewRow()
                 DataRow row = d.NewRow();
+                
 
                 // iterate over all columns to fill the row
-                for (int i = 0; i < rowLength; i++)
+                for (int j = 1; j < rowLength; j++)
                 {
-                    row[i] = Double.Parse(data[j, i]).ToString("#.######");
+                    row[j-1] = Double.Parse(data[i, j]).ToString("#.######");
                 }
 
                 // add the current row to the DataTable
                 d.Rows.Add(row);
             }
-            DataViewForm f = new DataViewForm(d, changeMask);
-            f.ShowDialog();
+            DataViewForm f = new DataViewForm(d, changeMask, fkkvs.pwAxis);
+            f.Text = "FKKVS";
+            f.Show();
         }
     }
 }

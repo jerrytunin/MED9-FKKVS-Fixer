@@ -34,11 +34,20 @@
             // 
             // fkkvsView
             // 
+            this.fkkvsView.AllowUserToAddRows = false;
+            this.fkkvsView.AllowUserToDeleteRows = false;
+            this.fkkvsView.AllowUserToResizeColumns = false;
+            this.fkkvsView.AllowUserToResizeRows = false;
             this.fkkvsView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.fkkvsView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.fkkvsView.Location = new System.Drawing.Point(0, 0);
             this.fkkvsView.Name = "fkkvsView";
+            this.fkkvsView.ReadOnly = true;
             this.fkkvsView.RowTemplate.Height = 28;
+            this.fkkvsView.ShowCellErrors = false;
+            this.fkkvsView.ShowCellToolTips = false;
+            this.fkkvsView.ShowEditingIcon = false;
+            this.fkkvsView.ShowRowErrors = false;
             this.fkkvsView.Size = new System.Drawing.Size(2244, 963);
             this.fkkvsView.TabIndex = 0;
             // 
