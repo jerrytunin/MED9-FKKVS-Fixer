@@ -17,6 +17,9 @@ namespace FKKVSFixer
         public double[,] mapData { get; set; }
         public double[,] origData { get; set; }
 
+        public double[,] correctionSumMap { get; set; }
+        public int[,] numCorrections { get; set; }
+
         public double[] rpmAxis { get; set; }
         public double[] pwAxis { get; set; }
 
@@ -28,6 +31,8 @@ namespace FKKVSFixer
             upperPW = new double[16];
             mapData = new double[16, 16];
             origData = new double[16, 16];
+            correctionSumMap = new double[16, 16];
+            numCorrections = new int[16, 16];
             rpmAxis = new double[16];
             pwAxis = new double[16];
             parseMapData(fullMapData);

@@ -37,11 +37,7 @@ namespace FKKVSFixer
         {
             if (txtLog.Text.Equals(""))
                 return;
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "CSV Files (*.csv)|*.csv";
-            if (sfd.ShowDialog() != System.Windows.Forms.DialogResult.OK)
-                return;
-            string saveFile = sfd.FileName;
+            
             string[,] logFile = processCSV(txtLog.Text);
             LogDataItem[] logData = new LogDataItem[logFile.GetLength(0) - 1];
             int rpmCol = -1;
@@ -63,6 +59,16 @@ namespace FKKVSFixer
                     corCol = i;
                 }
             }
+            if (rpmCol == -1 || pwCol == -1 || corCol == -1)
+            {
+                MessageBox.Show("Unable to detect correct parameters in log file. Please try again with a different log.", "Log Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "CSV Files (*.csv)|*.csv";
+            if (sfd.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+                return;
+            string saveFile = sfd.FileName;
             //Assign data to 2D array and parse to double
             for (int i = 0; i < logData.Length; i++)
 			{
@@ -104,9 +110,23 @@ namespace FKKVSFixer
                     }
                     if (y < 0)
                         continue;
-                    fkkvs.mapData[x, y] = (fkkvs.mapData[x, y] + l.correction) / 2;
+                    fkkvs.correctionSumMap[x, y] += l.correction;
+                    fkkvs.numCorrections[x, y]++;
                 }
             }
+
+            for (int i = 0; i < fkkvs.mapData.GetLength(0); i++)
+            {
+                for (int j = 0; j < fkkvs.mapData.GetLength(1); j++)
+                {
+                    if (fkkvs.numCorrections[i, j] > 0)
+                    {
+                        double avgCorrectionCell = fkkvs.correctionSumMap[i, j] / fkkvs.numCorrections[i, j];
+                        fkkvs.mapData[i, j] *= avgCorrectionCell;
+                    }
+                }
+            }
+
             //Create CSV Output
             string output = "";
             for (int i = 0; i < 17; i++)

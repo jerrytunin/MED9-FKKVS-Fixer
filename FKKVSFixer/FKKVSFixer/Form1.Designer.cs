@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.txtLog = new System.Windows.Forms.TextBox();
             this.cmdLog = new System.Windows.Forms.Button();
             this.cmdProcess = new System.Windows.Forms.Button();
@@ -91,7 +92,9 @@
             this.Controls.Add(this.cmdProcess);
             this.Controls.Add(this.cmdLog);
             this.Controls.Add(this.txtLog);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FKKVS Fixer";
             this.ResumeLayout(false);
             this.PerformLayout();
