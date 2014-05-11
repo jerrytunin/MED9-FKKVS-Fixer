@@ -54,7 +54,7 @@ namespace FKKVSFixer
                 {
                     rpmCol = i;
                 }
-                else if (logFile[0, i].Contains("ti"))
+                else if (logFile[0, i].Contains("te"))
                 {
                     pwCol = i;
                 }
