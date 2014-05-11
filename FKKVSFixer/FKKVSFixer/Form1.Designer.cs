@@ -92,7 +92,7 @@
             this.Controls.Add(this.cmdLog);
             this.Controls.Add(this.txtLog);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "FKKVS Fixer";
             this.ResumeLayout(false);
             this.PerformLayout();
 
