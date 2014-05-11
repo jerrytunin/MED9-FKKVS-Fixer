@@ -90,10 +90,13 @@ namespace FKKVSFixer
                 for (int j = 0; j < fkkvs.lowerRPM.Length; j++)
                 {
                     LogDataItem l = logData[i];
-                    if (l.rpm >= fkkvs.lowerRPM[j] && l.rpm < fkkvs.upperRPM[j])
-                        rpmVals[j].Add(l);
-                    if (l.pw >= fkkvs.lowerPW[j] && l.pw < fkkvs.upperPW[j])
-                        pwVals[j].Add(l);
+                    if (l.correction != 1)
+                    {
+                        if (l.rpm >= fkkvs.lowerRPM[j] && l.rpm < fkkvs.upperRPM[j])
+                            rpmVals[j].Add(l);
+                        if (l.pw >= fkkvs.lowerPW[j] && l.pw < fkkvs.upperPW[j])
+                            pwVals[j].Add(l);
+                    }
                 }
             }
             //Update the FKKVS mapData for the values at the specific RPM and PW values
