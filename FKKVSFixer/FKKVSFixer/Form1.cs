@@ -162,7 +162,7 @@ namespace FKKVSFixer
             }
             File.WriteAllText(saveFile, output);
             //Display FKKVS Map
-            updateFKKVSView(output, fkkvs);
+            updateFKKVSView(fkkvs, chkDelta.Checked);
         }
         /// <summary>
         /// Parse a CSV from a file
@@ -215,9 +215,8 @@ namespace FKKVSFixer
         /// </summary>
         /// <param name="dIn">The updated fkkvs data</param>
         /// <param name="fkkvs">The FKKVS map</param>
-        private void updateFKKVSView(string dIn, FKKVSMap fkkvs)
+        private void updateFKKVSView(FKKVSMap fkkvs, bool delta)
         {
-            string[,] data = processCSVFromString(dIn);
             int[,] changeMask = new int[16, 16];
             DataTable d = new DataTable();
             //Create and label columns with RPM values
@@ -226,8 +225,8 @@ namespace FKKVSFixer
                 d.Columns.Add(fkkvs.rpmAxis[i].ToString());
             }
 
-            int rowCount = data.GetLength(0);
-            int rowLength = data.GetLength(1);
+            int rowCount = fkkvs.mapData.GetLength(0);
+            int rowLength = fkkvs.mapData.GetLength(1);
             //Calculate change mask for coloring of cells
             for (int i = 0; i < changeMask.GetLength(0); i++)
             {
@@ -245,13 +244,16 @@ namespace FKKVSFixer
             }
 
             //Parse data from the updated map to doubles and assign to cells
-            for (int i = 1; i < rowCount; i++)
+            for (int i = 0; i < rowCount; i++)
             {
                 DataRow row = d.NewRow();
                 
-                for (int j = 1; j < rowLength; j++)
+                for (int j = 0; j < rowLength; j++)
                 {
-                    row[j-1] = Double.Parse(data[i, j]).ToString("#.######");
+                    if (delta)
+                        row[j] = (fkkvs.mapData[i, j] - fkkvs.origData[i, j]).ToString("0.000000");
+                    else
+                        row[j] = fkkvs.mapData[i, j].ToString("0.000000");
                 }
 
                 d.Rows.Add(row);

@@ -34,6 +34,7 @@
             this.cmdProcess = new System.Windows.Forms.Button();
             this.cmdChooseFKKVS = new System.Windows.Forms.Button();
             this.txtFKKVS = new System.Windows.Forms.TextBox();
+            this.chkDelta = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // txtLog
@@ -82,11 +83,22 @@
             this.txtFKKVS.Size = new System.Drawing.Size(596, 26);
             this.txtFKKVS.TabIndex = 3;
             // 
+            // chkDelta
+            // 
+            this.chkDelta.AutoSize = true;
+            this.chkDelta.Location = new System.Drawing.Point(502, 343);
+            this.chkDelta.Name = "chkDelta";
+            this.chkDelta.Size = new System.Drawing.Size(170, 24);
+            this.chkDelta.TabIndex = 5;
+            this.chkDelta.Text = "Display Delta Mask";
+            this.chkDelta.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(748, 387);
+            this.Controls.Add(this.chkDelta);
             this.Controls.Add(this.cmdChooseFKKVS);
             this.Controls.Add(this.txtFKKVS);
             this.Controls.Add(this.cmdProcess);
@@ -108,6 +120,7 @@
         private System.Windows.Forms.Button cmdProcess;
         private System.Windows.Forms.Button cmdChooseFKKVS;
         private System.Windows.Forms.TextBox txtFKKVS;
+        private System.Windows.Forms.CheckBox chkDelta;
 
 
     }
