@@ -187,10 +187,24 @@ namespace FKKVSFixer
         {
             string lf = "";
             if (!isAudiFile)
-                lf = File.ReadAllText(fileName);
+            {
+                //lf = File.ReadAllText(fileName);
+                using (var fs = new FileStream(fileName, FileMode.Open,
+                   FileAccess.Read, FileShare.ReadWrite))
+                using (var sr = new StreamReader(fs))
+                {
+                    lf = sr.ReadToEnd();
+                }
+            }
             else
             {
-                lf = deleteLines(File.ReadAllText(fileName), 16);
+                //lf = deleteLines(File.ReadAllText(fileName), 16);
+                using (var fs = new FileStream(fileName, FileMode.Open,
+                   FileAccess.Read, FileShare.ReadWrite))
+                using (var sr = new StreamReader(fs))
+                {
+                    lf = deleteLines(sr.ReadToEnd(), 16);
+                }
             }
             return processCSVFromString(lf);
         }
