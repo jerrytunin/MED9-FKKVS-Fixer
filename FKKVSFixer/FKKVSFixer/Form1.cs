@@ -35,26 +35,40 @@ namespace FKKVSFixer
         /// </summary>
         private void cmdProcess_Click(object sender, EventArgs e)
         {
+            bool isAudiFile = false;
             if (txtLog.Text.Equals(""))
                 return;
             
-            string[,] logFile = processCSV(txtLog.Text);
+            string[,] logFile = processCSV(txtLog.Text, false);
+            if (logFile[2, 0].Contains("ME7-Logger"))
+            {
+                isAudiFile = true;
+                logFile = processCSV(txtLog.Text, isAudiFile);
+            }
             LogDataItem[] logData = new LogDataItem[logFile.GetLength(0) - 1];
             int rpmCol = -1;
             int pwCol = -1;
             int corCol = -1;
             //Auto determine the location of RPM, PW, and corrections
+            int dataBase = 0;
+            int nameBase = 0;
+            if (isAudiFile)
+            {
+                dataBase = 2;
+                nameBase = 0;
+                logData = new LogDataItem[logFile.GetLength(0) - 3];
+            }
             for (int i = 0; i < logFile.GetLength(1); i++)
             {
-                if (logFile[0, i].Contains("nmot"))
+                if (logFile[nameBase, i].Contains("nmot"))
                 {
                     rpmCol = i;
                 }
-                else if (logFile[0, i].Contains("te"))
+                else if (logFile[nameBase, i].Contains("te"))
                 {
                     pwCol = i;
                 }
-                else if (logFile[0, i].Contains("fr"))
+                else if (logFile[nameBase, i].Contains("fr"))
                 {
                     corCol = i;
                 }
@@ -72,9 +86,9 @@ namespace FKKVSFixer
             //Assign data to 2D array and parse to double
             for (int i = 0; i < logData.Length; i++)
 			{
-                logData[i] = new LogDataItem(Double.Parse(logFile[i + 1, rpmCol]), Double.Parse(logFile[i + 1, pwCol]), Double.Parse(logFile[i + 1, corCol]));
+                logData[i] = new LogDataItem(Double.Parse(logFile[dataBase + i + 1, rpmCol]), Double.Parse(logFile[dataBase + i + 1, pwCol]), Double.Parse(logFile[dataBase + i + 1, corCol]));
 			}
-            string[,] fkkvsFile = processCSV(txtFKKVS.Text);
+            string[,] fkkvsFile = processCSV(txtFKKVS.Text, false);
             FKKVSMap fkkvs = new FKKVSMap(fkkvsFile);
             //Create axis holders for log data values to be deposited into
             List<LogDataItem>[] rpmVals = new List<LogDataItem>[16];
@@ -169,10 +183,25 @@ namespace FKKVSFixer
         /// </summary>
         /// <param name="fileName">The file to process</param>
         /// <returns>A 2D array containing the parsed CSV</returns>
-        private string[,] processCSV(string fileName)
+        private string[,] processCSV(string fileName, bool isAudiFile)
         {
-            string lf = File.ReadAllText(fileName);
+            string lf = "";
+            if (!isAudiFile)
+                lf = File.ReadAllText(fileName);
+            else
+            {
+                lf = deleteLines(File.ReadAllText(fileName), 16);
+            }
             return processCSVFromString(lf);
+        }
+
+        public static string deleteLines(string s, int linesToRemove)
+        {
+            return s.Split(Environment.NewLine.ToCharArray(),
+                           linesToRemove + 1,
+                           StringSplitOptions.RemoveEmptyEntries
+                ).Skip(linesToRemove)
+                .FirstOrDefault();
         }
 
         /// <summary>
