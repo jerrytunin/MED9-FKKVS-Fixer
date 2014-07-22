@@ -139,7 +139,7 @@ namespace FKKVSFixer
                     if (fkkvs.numCorrections[i, j] > 0)
                     {
                         double avgCorrectionCell = fkkvs.correctionSumMap[i, j] / fkkvs.numCorrections[i, j];
-                        fkkvs.mapData[i, j] *= avgCorrectionCell;
+                        fkkvs.mapData[j, i] *= avgCorrectionCell;
                     }
                 }
             }
