@@ -35,6 +35,12 @@
             this.cmdChooseFKKVS = new System.Windows.Forms.Button();
             this.txtFKKVS = new System.Windows.Forms.TextBox();
             this.chkDelta = new System.Windows.Forms.CheckBox();
+            this.trkSmoothing = new System.Windows.Forms.TrackBar();
+            this.numSmoothPasses = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.trkSmoothing)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSmoothPasses)).BeginInit();
             this.SuspendLayout();
             // 
             // txtLog
@@ -57,7 +63,7 @@
             // 
             // cmdProcess
             // 
-            this.cmdProcess.Location = new System.Drawing.Point(301, 337);
+            this.cmdProcess.Location = new System.Drawing.Point(301, 463);
             this.cmdProcess.Name = "cmdProcess";
             this.cmdProcess.Size = new System.Drawing.Size(147, 35);
             this.cmdProcess.TabIndex = 2;
@@ -67,7 +73,7 @@
             // 
             // cmdChooseFKKVS
             // 
-            this.cmdChooseFKKVS.Location = new System.Drawing.Point(301, 276);
+            this.cmdChooseFKKVS.Location = new System.Drawing.Point(301, 270);
             this.cmdChooseFKKVS.Name = "cmdChooseFKKVS";
             this.cmdChooseFKKVS.Size = new System.Drawing.Size(147, 35);
             this.cmdChooseFKKVS.TabIndex = 4;
@@ -86,18 +92,61 @@
             // chkDelta
             // 
             this.chkDelta.AutoSize = true;
-            this.chkDelta.Location = new System.Drawing.Point(502, 343);
+            this.chkDelta.Location = new System.Drawing.Point(502, 469);
             this.chkDelta.Name = "chkDelta";
             this.chkDelta.Size = new System.Drawing.Size(170, 24);
             this.chkDelta.TabIndex = 5;
             this.chkDelta.Text = "Display Delta Mask";
             this.chkDelta.UseVisualStyleBackColor = true;
             // 
+            // trkSmoothing
+            // 
+            this.trkSmoothing.Location = new System.Drawing.Point(76, 388);
+            this.trkSmoothing.Maximum = 100;
+            this.trkSmoothing.Name = "trkSmoothing";
+            this.trkSmoothing.Size = new System.Drawing.Size(596, 69);
+            this.trkSmoothing.TabIndex = 6;
+            this.trkSmoothing.Value = 50;
+            // 
+            // numSmoothPasses
+            // 
+            this.numSmoothPasses.Location = new System.Drawing.Point(456, 324);
+            this.numSmoothPasses.Name = "numSmoothPasses";
+            this.numSmoothPasses.Size = new System.Drawing.Size(66, 26);
+            this.numSmoothPasses.TabIndex = 7;
+            this.numSmoothPasses.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(304, 362);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(140, 20);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Smoothing Factor:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(226, 326);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(224, 20);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Number of Smoothing Passes:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(748, 387);
+            this.ClientSize = new System.Drawing.Size(748, 513);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.numSmoothPasses);
+            this.Controls.Add(this.trkSmoothing);
             this.Controls.Add(this.chkDelta);
             this.Controls.Add(this.cmdChooseFKKVS);
             this.Controls.Add(this.txtFKKVS);
@@ -108,6 +157,8 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FKKVS Fixer";
+            ((System.ComponentModel.ISupportInitialize)(this.trkSmoothing)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSmoothPasses)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -121,6 +172,10 @@
         private System.Windows.Forms.Button cmdChooseFKKVS;
         private System.Windows.Forms.TextBox txtFKKVS;
         private System.Windows.Forms.CheckBox chkDelta;
+        private System.Windows.Forms.TrackBar trkSmoothing;
+        private System.Windows.Forms.NumericUpDown numSmoothPasses;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
 
 
     }

@@ -144,6 +144,11 @@ namespace FKKVSFixer
                 }
             }
 
+            for (int i = 0; i < numSmoothPasses.Value; i++)
+            {
+                fkkvs.mapData = mapSmoothing(fkkvs.mapData, (((double)trkSmoothing.Value) / 100.0));
+            }
+
             //Create CSV Output
             string output = "";
             for (int i = 0; i < 17; i++)
@@ -304,6 +309,125 @@ namespace FKKVSFixer
             DataViewForm f = new DataViewForm(d, changeMask, fkkvs.pwAxis);
             f.Text = "FKKVS";
             f.Show();
+        }
+
+
+        private static double[,] mapSmoothing(double[,] initMapData, double smoothingFactor)
+        {
+            double[,] smoothedData = new double[16, 16];
+            smoothingFactor = smoothingFactor > 1 ? 1 : smoothingFactor;
+            smoothingFactor = smoothingFactor < 0 ? 0 : smoothingFactor;
+            for (int i = 0; i < smoothedData.GetLength(0); i++)
+            {
+                for (int j = 0; j < smoothedData.GetLength(1); j++)
+                {
+                    bool leftCell = true;
+                    bool rightCell = true;
+                    bool upCell = true;
+                    bool downCell = true;
+
+                    if (i == 0)
+                        upCell = false;
+                    else if (i == smoothedData.GetLength(0) - 1)
+                        downCell = false;
+
+                    if (j == 0)
+                        leftCell = false;
+                    else if (j == smoothedData.GetLength(1) - 1)
+                        rightCell = false;
+
+                    if (rightCell && downCell && !upCell && !leftCell)
+                    {
+                        double rightCellVal = initMapData[i, j + 1];
+                        double downCellVal = initMapData[i + 1, j];
+                        double avg = (rightCellVal + downCellVal) / 2;
+                        double origCellWeight = 2 - smoothingFactor;
+                        smoothedData[i, j] = (initMapData[i, j] * origCellWeight + avg * smoothingFactor) / 2;
+                    }
+                    else if (rightCell && downCell && leftCell && !upCell)
+                    {
+                        double rightCellVal = initMapData[i, j + 1];
+                        double downCellVal = initMapData[i + 1, j];
+                        double leftCellVal = initMapData[i, j - 1];
+                        double avg = (rightCellVal + downCellVal + leftCellVal) / 3;
+                        double origCellWeight = 2 - smoothingFactor;
+                        smoothedData[i, j] = (initMapData[i, j] * origCellWeight + avg * smoothingFactor) / 2;
+                    }
+                    else if (leftCell && downCell && !rightCell && !upCell)
+                    {
+                        double downCellVal = initMapData[i + 1, j];
+                        double leftCellVal = initMapData[i, j - 1];
+                        double avg = (downCellVal + leftCellVal) / 2;
+                        double origCellWeight = 2 - smoothingFactor;
+                        smoothedData[i, j] = (initMapData[i, j] * origCellWeight + avg * smoothingFactor) / 2;
+                    }
+                    else if (upCell && rightCell && downCell && !leftCell)
+                    {
+                        double rightCellVal = initMapData[i, j + 1];
+                        double upCellVal = initMapData[i - 1, j];
+                        double downCellVal = initMapData[i + 1, j];
+                        double avg = (rightCellVal + upCellVal + downCellVal) / 3;
+                        double origCellWeight = 2 - smoothingFactor;
+                        smoothedData[i, j] = (initMapData[i, j] * origCellWeight + avg * smoothingFactor) / 2;
+
+                    }
+                    else if (upCell && leftCell && downCell && rightCell)
+                    {
+                        double leftCellVal = initMapData[i, j - 1];
+                        double rightCellVal = initMapData[i, j + 1];
+                        double upCellVal = initMapData[i - 1, j];
+                        double downCellVal = initMapData[i + 1, j];
+                        double avg = (leftCellVal + rightCellVal + upCellVal + downCellVal) / 4;
+                        double origCellWeight = 2 - smoothingFactor;
+                        smoothedData[i, j] = (initMapData[i, j] * origCellWeight + avg * smoothingFactor) / 2;
+                    }
+                    else if (upCell && leftCell && downCell && !rightCell)
+                    {
+                        double leftCellVal = initMapData[i, j - 1];
+                        double upCellVal = initMapData[i - 1, j];
+                        double downCellVal = initMapData[i + 1, j];
+                        double avg = (leftCellVal + upCellVal + downCellVal) / 3;
+                        double origCellWeight = 2 - smoothingFactor;
+                        smoothedData[i, j] = (initMapData[i, j] * origCellWeight + avg * smoothingFactor) / 2;
+                    }
+                    else if (upCell && !leftCell && !downCell && rightCell)
+                    {
+                        double rightCellVal = initMapData[i, j + 1];
+                        double upCellVal = initMapData[i - 1, j];
+                        double avg = (rightCellVal + upCellVal) / 2;
+                        double origCellWeight = 2 - smoothingFactor;
+                        smoothedData[i, j] = (initMapData[i, j] * origCellWeight + avg * smoothingFactor) / 2;
+                    }
+                    else if (upCell && leftCell && !downCell && rightCell)
+                    {
+                        double leftCellVal = initMapData[i, j - 1];
+                        double rightCellVal = initMapData[i, j + 1];
+                        double upCellVal = initMapData[i - 1, j];
+                        double avg = (leftCellVal + rightCellVal + upCellVal) / 3;
+                        double origCellWeight = 2 - smoothingFactor;
+                        smoothedData[i, j] = (initMapData[i, j] * origCellWeight + avg * smoothingFactor) / 2;
+                    }
+                    else if (upCell && leftCell && !downCell && !rightCell)
+                    {
+                        double leftCellVal = initMapData[i, j - 1];
+                        double upCellVal = initMapData[i - 1, j];
+                        double avg = (leftCellVal + upCellVal) / 2;
+                        double origCellWeight = 2 - smoothingFactor;
+                        smoothedData[i, j] = (initMapData[i, j] * origCellWeight + avg * smoothingFactor) / 2;
+                    }
+                    else
+                    {
+                        Console.WriteLine("You forgot something:");
+                        Console.WriteLine("Up: " + upCell.ToString());
+                        Console.WriteLine("Down: " + downCell.ToString());
+                        Console.WriteLine("Left: " + leftCell.ToString());
+                        Console.WriteLine("Right: " + rightCell.ToString());
+                    }
+
+                }
+            }
+
+            return smoothedData;
         }
     }
 }
