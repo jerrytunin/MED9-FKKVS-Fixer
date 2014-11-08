@@ -21,6 +21,8 @@ namespace FKKVSFixer
             InitializeComponent();
         }
 
+        private bool isAudiFile;
+
         private void cmdLog_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -35,16 +37,12 @@ namespace FKKVSFixer
         /// </summary>
         private void cmdProcess_Click(object sender, EventArgs e)
         {
-            bool isAudiFile = false;
+            isAudiFile = false;
             if (txtLog.Text.Equals(""))
                 return;
             
-            string[,] logFile = processCSV(txtLog.Text, false);
-            if (logFile[2, 0].Contains("ME7-Logger"))
-            {
-                isAudiFile = true;
-                logFile = processCSV(txtLog.Text, isAudiFile);
-            }
+            string[,] logFile = processCSV(txtLog.Text);
+
             LogDataItem[] logData = new LogDataItem[logFile.GetLength(0) - 1];
             int rpmCol = -1;
             int pwCol = -1;
@@ -60,15 +58,27 @@ namespace FKKVSFixer
             }
             for (int i = 0; i < logFile.GetLength(1); i++)
             {
-                if (logFile[nameBase, i].Contains("nmot"))
+                if (logFile[nameBase, i].Contains("nmot_w"))
                 {
                     rpmCol = i;
                 }
-                else if (logFile[nameBase, i].Contains("te"))
+                else if (logFile[nameBase, i].Contains("nmot"))
+                {
+                    rpmCol = i;
+                }
+                else if (logFile[nameBase, i].Contains("tevfakge_w"))
                 {
                     pwCol = i;
                 }
-                else if (logFile[nameBase, i].Contains("fr"))
+                else if (logFile[nameBase, i].Contains("te_w"))
+                {
+                    pwCol = i;
+                }
+                else if (logFile[nameBase, i].Contains("fr_w"))
+                {
+                    corCol = i;
+                }
+                else if (logFile[nameBase, i].Contains("frm_w"))
                 {
                     corCol = i;
                 }
@@ -88,7 +98,8 @@ namespace FKKVSFixer
 			{
                 logData[i] = new LogDataItem(Double.Parse(logFile[dataBase + i + 1, rpmCol]), Double.Parse(logFile[dataBase + i + 1, pwCol]), Double.Parse(logFile[dataBase + i + 1, corCol]));
 			}
-            string[,] fkkvsFile = processCSV(txtFKKVS.Text, false);
+            isAudiFile = false;
+            string[,] fkkvsFile = processCSV(txtFKKVS.Text);
             FKKVSMap fkkvs = new FKKVSMap(fkkvsFile);
             //Create axis holders for log data values to be deposited into
             List<LogDataItem>[] rpmVals = new List<LogDataItem>[16];
@@ -188,27 +199,23 @@ namespace FKKVSFixer
         /// </summary>
         /// <param name="fileName">The file to process</param>
         /// <returns>A 2D array containing the parsed CSV</returns>
-        private string[,] processCSV(string fileName, bool isAudiFile)
+        private string[,] processCSV(string fileName)
         {
             string lf = "";
-            if (!isAudiFile)
-            {
                 //lf = File.ReadAllText(fileName);
-                using (var fs = new FileStream(fileName, FileMode.Open,
-                   FileAccess.Read, FileShare.ReadWrite))
-                using (var sr = new StreamReader(fs))
-                {
-                    lf = sr.ReadToEnd();
-                }
-            }
-            else
+            using (var fs = new FileStream(fileName, FileMode.Open,
+                FileAccess.Read, FileShare.ReadWrite))
+            using (var sr = new StreamReader(fs))
             {
-                //lf = deleteLines(File.ReadAllText(fileName), 16);
-                using (var fs = new FileStream(fileName, FileMode.Open,
-                   FileAccess.Read, FileShare.ReadWrite))
-                using (var sr = new StreamReader(fs))
+                lf = sr.ReadToEnd();
+
+                if (lf.Contains("ME7-Logger"))
+                    isAudiFile = true;
+
+                if (isAudiFile)
                 {
-                    lf = deleteLines(sr.ReadToEnd(), 16);
+                    int pos = lf.IndexOf("TimeStamp");
+                    lf = lf.Substring(pos);
                 }
             }
             return processCSVFromString(lf);

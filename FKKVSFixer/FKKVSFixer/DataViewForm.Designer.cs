@@ -49,14 +49,14 @@
             this.fkkvsView.ShowCellToolTips = false;
             this.fkkvsView.ShowEditingIcon = false;
             this.fkkvsView.ShowRowErrors = false;
-            this.fkkvsView.Size = new System.Drawing.Size(2244, 963);
+            this.fkkvsView.Size = new System.Drawing.Size(2152, 963);
             this.fkkvsView.TabIndex = 0;
             // 
             // DataViewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2244, 963);
+            this.ClientSize = new System.Drawing.Size(2152, 963);
             this.Controls.Add(this.fkkvsView);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DataViewForm";
