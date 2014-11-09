@@ -62,7 +62,7 @@ namespace FKKVSFixer
                 {
                     rpmCol = i;
                 }
-                else if (logFile[nameBase, i].Contains("nmot"))
+                else if (logFile[nameBase, i].Contains("nmot") && rpmCol == -1)
                 {
                     rpmCol = i;
                 }
@@ -70,7 +70,7 @@ namespace FKKVSFixer
                 {
                     pwCol = i;
                 }
-                else if (logFile[nameBase, i].Contains("te_w"))
+                else if (logFile[nameBase, i].Contains("te_w") && rpmCol == -1)
                 {
                     pwCol = i;
                 }
@@ -78,7 +78,7 @@ namespace FKKVSFixer
                 {
                     corCol = i;
                 }
-                else if (logFile[nameBase, i].Contains("frm_w"))
+                else if (logFile[nameBase, i].Contains("frm_w") && rpmCol == -1)
                 {
                     corCol = i;
                 }
