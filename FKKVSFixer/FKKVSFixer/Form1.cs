@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Utility.ModifyRegistry;
 
 namespace FKKVSFixer
 {
@@ -16,12 +18,17 @@ namespace FKKVSFixer
     /// </summary>
     public partial class Form1 : Form
     {
+
+        private ModifyRegistry regedit;
+        private readonly String APP_KEY = "Software\\" + Application.ProductName;
+        private bool isAudiFile;
+
         public Form1()
         {
             InitializeComponent();
+            isAudiFile = false;
+            regedit = new ModifyRegistry();
         }
-
-        private bool isAudiFile;
 
         private void cmdLog_Click(object sender, EventArgs e)
         {
@@ -70,7 +77,7 @@ namespace FKKVSFixer
                 {
                     pwCol = i;
                 }
-                else if (logFile[nameBase, i].Contains("te_w") && rpmCol == -1)
+                else if (logFile[nameBase, i].Contains("te_w") && pwCol == -1)
                 {
                     pwCol = i;
                 }
@@ -78,16 +85,18 @@ namespace FKKVSFixer
                 {
                     corCol = i;
                 }
-                else if (logFile[nameBase, i].Contains("frm_w") && rpmCol == -1)
+                else if (logFile[nameBase, i].Contains("frm_w") && corCol == -1)
                 {
                     corCol = i;
                 }
             }
+
             if (rpmCol == -1 || pwCol == -1 || corCol == -1)
             {
                 MessageBox.Show("Unable to detect correct parameters in log file. Please try again with a different log.", "Log Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "CSV Files (*.csv)|*.csv";
             if (sfd.ShowDialog() != System.Windows.Forms.DialogResult.OK)
@@ -214,6 +223,7 @@ namespace FKKVSFixer
 
                 if (isAudiFile)
                 {
+                    lf = lf.Replace("\r", "");
                     int pos = lf.IndexOf("TimeStamp");
                     lf = lf.Substring(pos);
                 }
@@ -435,6 +445,36 @@ namespace FKKVSFixer
             }
 
             return smoothedData;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            regedit.BaseRegistryKey = Registry.CurrentUser;
+            regedit.SubKey = APP_KEY;
+            try
+            {
+                numSmoothPasses.Value = Int32.Parse(regedit.Read("smoothingPasses"));
+                trkSmoothing.Value = Int32.Parse(regedit.Read("smoothingFactor"));
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            regedit.BaseRegistryKey = Registry.CurrentUser;
+            regedit.SubKey = APP_KEY;
+            try
+            {
+                regedit.Write("smoothingPasses", numSmoothPasses.Value.ToString());
+                regedit.Write("smoothingFactor", trkSmoothing.Value.ToString());
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }
