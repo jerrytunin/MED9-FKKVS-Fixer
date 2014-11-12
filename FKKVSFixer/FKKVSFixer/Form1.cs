@@ -73,7 +73,7 @@ namespace FKKVSFixer
                 {
                     rpmCol = i;
                 }
-                else if (logFile[nameBase, i].Contains("tevfakge_w"))
+                else if (logFile[nameBase, i].Contains("tevfakge_w") || logFile[nameBase, i].Contains("tevfa_w"))
                 {
                     pwCol = i;
                 }
