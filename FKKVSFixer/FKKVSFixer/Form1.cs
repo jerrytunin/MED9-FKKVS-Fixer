@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using Utility.ModifyRegistry;
 
@@ -23,9 +25,14 @@ namespace FKKVSFixer
         private readonly String APP_KEY = "Software\\" + Application.ProductName;
         private bool isAudiFile;
 
+        CultureInfo culture;
+
         public Form1()
         {
             InitializeComponent();
+            culture = CultureInfo.CreateSpecificCulture("en-US");
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
             isAudiFile = false;
             regedit = new ModifyRegistry();
         }

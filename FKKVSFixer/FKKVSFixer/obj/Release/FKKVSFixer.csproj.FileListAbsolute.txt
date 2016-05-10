@@ -1,0 +1,8 @@
+C:\Users\rober\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\bin\Release\FKKVSFixer.exe
+C:\Users\rober\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\bin\Release\FKKVSFixer.pdb
+C:\Users\rober\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\obj\Release\FKKVSFixer.DataViewForm.resources
+C:\Users\rober\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\obj\Release\FKKVSFixer.Form1.resources
+C:\Users\rober\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\obj\Release\FKKVSFixer.Properties.Resources.resources
+C:\Users\rober\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\obj\Release\FKKVSFixer.csproj.GenerateResource.Cache
+C:\Users\rober\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\obj\Release\FKKVSFixer.exe
+C:\Users\rober\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\obj\Release\FKKVSFixer.pdb
