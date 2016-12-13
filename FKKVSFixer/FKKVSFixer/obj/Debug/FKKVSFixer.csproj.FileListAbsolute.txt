@@ -7,3 +7,12 @@ C:\Users\rober\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\obj\Debug\FKKVSFix
 C:\Users\rober\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\obj\Debug\FKKVSFixer.csproj.GenerateResource.Cache
 C:\Users\rober\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\obj\Debug\FKKVSFixer.exe
 C:\Users\rober\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\obj\Debug\FKKVSFixer.pdb
+C:\Users\R\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\bin\Debug\FKKVSFixer.exe
+C:\Users\R\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\bin\Debug\FKKVSFixer.pdb
+C:\Users\R\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\obj\Debug\FKKVSFixer.csprojResolveAssemblyReference.cache
+C:\Users\R\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\obj\Debug\FKKVSFixer.DataViewForm.resources
+C:\Users\R\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\obj\Debug\FKKVSFixer.Form1.resources
+C:\Users\R\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\obj\Debug\FKKVSFixer.Properties.Resources.resources
+C:\Users\R\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\obj\Debug\FKKVSFixer.csproj.GenerateResource.Cache
+C:\Users\R\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\obj\Debug\FKKVSFixer.exe
+C:\Users\R\Source\Repos\fkkvs-fixer\FKKVSFixer\FKKVSFixer\obj\Debug\FKKVSFixer.pdb

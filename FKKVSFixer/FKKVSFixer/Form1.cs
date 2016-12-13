@@ -52,6 +52,7 @@ namespace FKKVSFixer
         private void cmdProcess_Click(object sender, EventArgs e)
         {
             isAudiFile = false;
+            setFormControlState(false);
             if (txtLog.Text.Equals(""))
                 return;
             
@@ -61,6 +62,12 @@ namespace FKKVSFixer
             int rpmCol = -1;
             int pwCol = -1;
             int corCol = -1;
+            int wbafrCol = -1;
+            int lamsbgCol = -1;
+            int wpedCol = -1;
+
+            bool narrowbandWOTCorrection = chkWBAFR.Checked;
+
             //Auto determine the location of RPM, PW, and corrections
             int dataBase = 0;
             int nameBase = 0;
@@ -96,9 +103,35 @@ namespace FKKVSFixer
                 {
                     corCol = i;
                 }
+
+                if (narrowbandWOTCorrection)
+                {
+                    if (logFile[nameBase, i].Contains("WBAFR"))
+                    {
+                        wbafrCol = i;
+                    }
+                    else if (logFile[nameBase, i].Contains("lamsbg_w"))
+                    {
+                        lamsbgCol = i;
+                    }
+                    else if (logFile[nameBase, i].Contains("wped_w"))
+                    {
+                        wpedCol = i;
+                    }
+                    else if (logFile[nameBase, i].Contains("wped") && wpedCol == -1)
+                    {
+                        wpedCol = i;
+                    }
+                }
+                else
+                {
+                    wbafrCol = 0;
+                    lamsbgCol = 0;
+                    wpedCol = 0;
+                }
             }
 
-            if (rpmCol == -1 || pwCol == -1 || corCol == -1)
+            if (rpmCol == -1 || pwCol == -1 || corCol == -1 || wbafrCol == -1 || lamsbgCol == -1 || wpedCol == -1)
             {
                 MessageBox.Show("Unable to detect correct parameters in log file. Please try again with a different log.", "Log Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -112,7 +145,19 @@ namespace FKKVSFixer
             //Assign data to 2D array and parse to double
             for (int i = 0; i < logData.Length; i++)
 			{
-                logData[i] = new LogDataItem(Double.Parse(logFile[dataBase + i + 1, rpmCol]), Double.Parse(logFile[dataBase + i + 1, pwCol]), Double.Parse(logFile[dataBase + i + 1, corCol]));
+                double wpedVal = Double.Parse(logFile[dataBase + i + 1, wpedCol]);
+                if (narrowbandWOTCorrection && wpedVal > 80)
+                {
+                    double corrValue = 1;
+                    double wbafrVal = Double.Parse(logFile[dataBase + i + 1, wbafrCol]);
+                    double lamsbgAFRVal = Double.Parse(logFile[dataBase + i + 1, lamsbgCol]) * 14.7;
+
+                    corrValue = 1 + ((wbafrVal - lamsbgAFRVal) / lamsbgAFRVal);
+
+                    logData[i] = new LogDataItem(Double.Parse(logFile[dataBase + i + 1, rpmCol]), Double.Parse(logFile[dataBase + i + 1, pwCol]), corrValue);
+                }
+                else
+                    logData[i] = new LogDataItem(Double.Parse(logFile[dataBase + i + 1, rpmCol]), Double.Parse(logFile[dataBase + i + 1, pwCol]), Double.Parse(logFile[dataBase + i + 1, corCol]));
 			}
             isAudiFile = false;
             string[,] fkkvsFile = processCSV(txtFKKVS.Text);
@@ -209,7 +254,20 @@ namespace FKKVSFixer
             File.WriteAllText(saveFile, output);
             //Display FKKVS Map
             updateFKKVSView(fkkvs, chkDelta.Checked);
+            setFormControlState(true);
         }
+
+        private void setFormControlState(bool enabled)
+        {
+            chkWBAFR.Enabled = enabled;
+            chkDelta.Enabled = enabled;
+            cmdProcess.Enabled = enabled;
+            cmdChooseFKKVS.Enabled = enabled;
+            cmdLog.Enabled = enabled;
+            numSmoothPasses.Enabled = enabled;
+            trkSmoothing.Enabled = enabled;
+        }
+
         /// <summary>
         /// Parse a CSV from a file
         /// </summary>

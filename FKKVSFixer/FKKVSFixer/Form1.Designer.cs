@@ -39,23 +39,26 @@
             this.numSmoothPasses = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.chkWBAFR = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.trkSmoothing)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numSmoothPasses)).BeginInit();
             this.SuspendLayout();
             // 
             // txtLog
             // 
-            this.txtLog.Location = new System.Drawing.Point(76, 115);
+            this.txtLog.Location = new System.Drawing.Point(51, 75);
+            this.txtLog.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
-            this.txtLog.Size = new System.Drawing.Size(596, 26);
+            this.txtLog.Size = new System.Drawing.Size(399, 20);
             this.txtLog.TabIndex = 0;
             // 
             // cmdLog
             // 
-            this.cmdLog.Location = new System.Drawing.Point(301, 169);
+            this.cmdLog.Location = new System.Drawing.Point(201, 110);
+            this.cmdLog.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cmdLog.Name = "cmdLog";
-            this.cmdLog.Size = new System.Drawing.Size(147, 35);
+            this.cmdLog.Size = new System.Drawing.Size(98, 23);
             this.cmdLog.TabIndex = 1;
             this.cmdLog.Text = "Choose Log File";
             this.cmdLog.UseVisualStyleBackColor = true;
@@ -63,9 +66,10 @@
             // 
             // cmdProcess
             // 
-            this.cmdProcess.Location = new System.Drawing.Point(301, 463);
+            this.cmdProcess.Location = new System.Drawing.Point(199, 319);
+            this.cmdProcess.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cmdProcess.Name = "cmdProcess";
-            this.cmdProcess.Size = new System.Drawing.Size(147, 35);
+            this.cmdProcess.Size = new System.Drawing.Size(98, 23);
             this.cmdProcess.TabIndex = 2;
             this.cmdProcess.Text = "Process FKKVS";
             this.cmdProcess.UseVisualStyleBackColor = true;
@@ -73,9 +77,10 @@
             // 
             // cmdChooseFKKVS
             // 
-            this.cmdChooseFKKVS.Location = new System.Drawing.Point(301, 270);
+            this.cmdChooseFKKVS.Location = new System.Drawing.Point(201, 175);
+            this.cmdChooseFKKVS.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cmdChooseFKKVS.Name = "cmdChooseFKKVS";
-            this.cmdChooseFKKVS.Size = new System.Drawing.Size(147, 35);
+            this.cmdChooseFKKVS.Size = new System.Drawing.Size(98, 23);
             this.cmdChooseFKKVS.TabIndex = 4;
             this.cmdChooseFKKVS.Text = "Choose FKKVS File";
             this.cmdChooseFKKVS.UseVisualStyleBackColor = true;
@@ -83,36 +88,40 @@
             // 
             // txtFKKVS
             // 
-            this.txtFKKVS.Location = new System.Drawing.Point(76, 228);
+            this.txtFKKVS.Location = new System.Drawing.Point(51, 148);
+            this.txtFKKVS.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtFKKVS.Name = "txtFKKVS";
             this.txtFKKVS.ReadOnly = true;
-            this.txtFKKVS.Size = new System.Drawing.Size(596, 26);
+            this.txtFKKVS.Size = new System.Drawing.Size(399, 20);
             this.txtFKKVS.TabIndex = 3;
             // 
             // chkDelta
             // 
             this.chkDelta.AutoSize = true;
-            this.chkDelta.Location = new System.Drawing.Point(502, 469);
+            this.chkDelta.Location = new System.Drawing.Point(333, 323);
+            this.chkDelta.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chkDelta.Name = "chkDelta";
-            this.chkDelta.Size = new System.Drawing.Size(170, 24);
+            this.chkDelta.Size = new System.Drawing.Size(117, 17);
             this.chkDelta.TabIndex = 5;
             this.chkDelta.Text = "Display Delta Mask";
             this.chkDelta.UseVisualStyleBackColor = true;
             // 
             // trkSmoothing
             // 
-            this.trkSmoothing.Location = new System.Drawing.Point(76, 388);
+            this.trkSmoothing.Location = new System.Drawing.Point(51, 252);
+            this.trkSmoothing.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.trkSmoothing.Maximum = 100;
             this.trkSmoothing.Name = "trkSmoothing";
-            this.trkSmoothing.Size = new System.Drawing.Size(596, 69);
+            this.trkSmoothing.Size = new System.Drawing.Size(397, 45);
             this.trkSmoothing.TabIndex = 6;
             this.trkSmoothing.Value = 50;
             // 
             // numSmoothPasses
             // 
-            this.numSmoothPasses.Location = new System.Drawing.Point(456, 324);
+            this.numSmoothPasses.Location = new System.Drawing.Point(304, 211);
+            this.numSmoothPasses.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numSmoothPasses.Name = "numSmoothPasses";
-            this.numSmoothPasses.Size = new System.Drawing.Size(66, 26);
+            this.numSmoothPasses.Size = new System.Drawing.Size(44, 20);
             this.numSmoothPasses.TabIndex = 7;
             this.numSmoothPasses.Value = new decimal(new int[] {
             1,
@@ -123,26 +132,39 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(304, 362);
+            this.label1.Location = new System.Drawing.Point(203, 235);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(140, 20);
+            this.label1.Size = new System.Drawing.Size(93, 13);
             this.label1.TabIndex = 8;
             this.label1.Text = "Smoothing Factor:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(226, 326);
+            this.label2.Location = new System.Drawing.Point(151, 212);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(224, 20);
+            this.label2.Size = new System.Drawing.Size(149, 13);
             this.label2.TabIndex = 9;
             this.label2.Text = "Number of Smoothing Passes:";
             // 
+            // chkWBAFR
+            // 
+            this.chkWBAFR.AutoSize = true;
+            this.chkWBAFR.Location = new System.Drawing.Point(153, 297);
+            this.chkWBAFR.Name = "chkWBAFR";
+            this.chkWBAFR.Size = new System.Drawing.Size(193, 17);
+            this.chkWBAFR.TabIndex = 10;
+            this.chkWBAFR.Text = "Enable WBAFR Correction at WOT";
+            this.chkWBAFR.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(748, 513);
+            this.ClientSize = new System.Drawing.Size(499, 351);
+            this.Controls.Add(this.chkWBAFR);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.numSmoothPasses);
@@ -154,6 +176,7 @@
             this.Controls.Add(this.cmdLog);
             this.Controls.Add(this.txtLog);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FKKVS Fixer";
@@ -178,8 +201,7 @@
         private System.Windows.Forms.NumericUpDown numSmoothPasses;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-
-
+        private System.Windows.Forms.CheckBox chkWBAFR;
     }
 }
 
